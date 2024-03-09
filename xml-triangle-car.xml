@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mujoco model="triangular_base">
-	<compiler autolimits="true"/>
 
     <!-- set some defaults for units and lighting -->
     <compiler angle="degree" meshdir="./stl_exports/"/>
@@ -19,56 +18,57 @@
         <light directional="true" pos="-0.5 0.5 3" dir="0 0 -1" />
 
         <!-- add a floor so we don't stare off into the abyss -->
-        <geom name="floor" pos="0 0 0" size="50 50 50" type="plane" rgba="1 0.83 0.61 0.5"/>
+        <geom name="floor" pos="0 0 1" size="50 50 50" type="plane" rgba="1 0.83 0.61 0.5"/>
 
         <!-- start building our model -->
         <body name="base" pos="0 0 0">
-	    <joint name="joint_base" type="free" axis="0 0 0" stiffness="0" damping="0" frictionloss="0"/>
+	    <joint name="joint_base" type="free" axis="0 0 0"/>
             <geom name="baseplate_robot" type="mesh" mesh="baseplate" pos="0 0 1"/>
             <inertial pos="0 0 1" mass="500" diaginertia="1 1 1"/>
 
 		<!-- Attach wheels to the main body -->
-		<body name="wheel_1_body" pos=".4 -.2325 1.05">
-		    <joint name="joint0" type="hinge" axis=".6 1 0" stiffness="0" frictionloss="1"/>
-		    <joint name="joint3" type="hinge" axis="1 -.5 0" stiffness="0" frictionloss="1"/>
+		<!--							cos(15 degree)	sin(15 degree)-->
+		<body name="wheel_1_body" pos=".4 -.2325 1.05" quat="0.9659258263 0 0 -0.2588190451 ">
+<!--		    <joint name="joint0" type="hinge" axis="1 0 0"/>-->
+		    <joint name="joint3" type="hinge" axis="1 0 0"/>
 		    <!-- <geom type="mesh" mesh="wheel" euler="0 0 90"/> -->
 		    <geom type="sphere" rgba="0 0 1 1" size=".1"/>
-		    <inertial pos="0 0 0" mass="0.75" diaginertia="1 1 1"/>
+		    <inertial pos="0 0 0" mass="1" diaginertia="0.145833 0.145833 0.125"/>
 		</body>
 
-		<body name="wheel_2_body" pos="0 .5 1.05">
-		    <joint name="joint1" type="hinge" axis="0 1 0" stiffness="0" frictionloss="1"/>
-		    <joint name="joint4" type="hinge" axis="1 0 0" stiffness="0" frictionloss="1"/>
+		<body name="wheel_2_body" pos="0 .5 1.05" quat="0.707106781 0 0 0.707106781">
+<!--		    <joint name="joint1" type="hinge" axis="0 0 1"/>-->
+		    <joint name="joint4" type="hinge" axis="1 0 0"/> <!-- GOOD -->
 		    <!-- <geom type="mesh" mesh="wheel" euler="0 0 26.5"/> -->
 		    <geom type="sphere" rgba="0 0 1 1" size=".1"/>
-		    <inertial pos="0 0 0" mass="0.75" diaginertia="1 1 1"/>
+		    <inertial pos="0 0 0" mass="1" diaginertia="0.145833 0.145833 0.125"/>
 		</body>
-
-		<body name="wheel_3_body" pos="-.4 -.2325 1.05">
-		    <joint name="joint2" type="hinge" axis=".4 -.6 0" stiffness="0" frictionloss="1"/>
-		    <joint name="joint5" type="hinge" axis="-1 -.6 0" stiffness="0" frictionloss="1"/>
+		<!--							sin(15 degree)	cos(15 degree)-->
+		<body name="wheel_3_body" pos="-.4 -.2325 1.05" quat="0.2588190451 0 0 -0.9659258263">
+<!--		    <joint name="joint2" type="hinge" axis="0 0 1"/>-->
+		    <joint name="joint5" type="hinge" axis="1 0 0"/>
 		    <!-- <geom type="mesh" mesh="wheel" euler="0 0 -26.5"/> -->
 		    <geom type="sphere" rgba="0 0 1 1" size=".1"/>
-		    <inertial pos="0 0 0" mass="0.75" diaginertia="1 1 1"/>
+		    <inertial pos="0 0 0" mass="1" diaginertia="0.145833 0.145833 0.125"/>
 		</body>
         </body>
     </worldbody>
 
     <!-- attach actuators to joints -->
     <actuator>
-        <motor name="joint0_motor" joint="joint0" ctrlrange="-15 15.0" ctrllimited="true"/>
-        <damper name="damper0" joint="joint0" kv="10" ctrlrange="0 1"/>
-        <motor name="joint1_motor" joint="joint1" ctrlrange="-15 15.0" ctrllimited="true"/>
-        <damper name="damper1" joint="joint1" kv="10" ctrlrange="0 1"/>
-        <motor name="joint2_motor" joint="joint2" ctrlrange="-15 15.0" ctrllimited="true"/>
-        <damper name="damper2" joint="joint2" kv="10" ctrlrange="0 1"/>
-	<motor name="joint3_motor" joint="joint3" ctrlrange="-15 15.0" ctrllimited="true"/>
-        <motor name="joint4_motor" joint="joint4" ctrlrange="-15 15.0" ctrllimited="true"/> 
-	<motor name="joint5_motor" joint="joint5" ctrlrange="-15 15.0" ctrllimited="true"/>
+<!--        <motor name="joint0_motor" joint="joint0" ctrlrange="-15 15.0" ctrllimited="true"/>
+        <damper name="damper0" joint="joint0" kv="10" ctrlrange="0 1"/>-->
+<!--        <motor name="joint1_motor" joint="joint1" ctrlrange="-15 15.0" ctrllimited="true"/>
+        <damper name="damper1" joint="joint1" kv="10" ctrlrange="0 1"/>-->
+<!--        <motor name="joint2_motor" joint="joint2" ctrlrange="-15 15.0" ctrllimited="true"/>
+        <damper name="damper2" joint="joint2" kv="10" ctrlrange="0 1"/>-->
+	<motor name="joint3_motor" joint="joint3" ctrlrange="-100 100.0" ctrllimited="true"/>
+        <motor name="joint4_motor" joint="joint4" ctrlrange="-100 100.0" ctrllimited="true"/>
+	<motor name="joint5_motor" joint="joint5" ctrlrange="-100 100.0" ctrllimited="true"/>
     </actuator>
 
   <sensor>
-    <actuatorfrc name="joint0_motor" actuator="joint0_motor"/>
+<!--    <actuatorfrc name="joint0_motor" actuator="joint0_motor"/>
     <actuatorfrc name="joint1_motor" actuator="joint1_motor"/>
     <actuatorfrc name="joint2_motor" actuator="joint2_motor"/>
     <actuatorfrc name="damper0" actuator="damper0"/>
@@ -76,7 +76,7 @@
     <actuatorfrc name="damper2" actuator="damper2"/>
     <jointactuatorfrc name="joint0" joint="joint0"/>
     <jointactuatorfrc name="joint1" joint="joint1"/>
-    <jointactuatorfrc name="joint2" joint="joint2"/>
+    <jointactuatorfrc name="joint2" joint="joint2"/>-->
   </sensor>
 
 </mujoco>
