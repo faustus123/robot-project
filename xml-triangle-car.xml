@@ -29,27 +29,27 @@
 		<!-- Attach wheels to the main body -->
 		<!--							cos(15 degree)	sin(15 degree)-->
 		<body name="wheel_1_body" pos=".4 -.2325 1.05" quat="0.9659258263 0 0 -0.2588190451 ">
-<!--		    <joint name="joint0" type="hinge" axis="1 0 0"/>-->
-		    <joint name="joint3" type="hinge" axis="1 0 0"/>
+		    <!--<joint name="joint0" type="hinge" axis="0 1 0"/>-->
+		    <joint name="joint3" type="hinge" axis="0 1 0"/>
 		    <!-- <geom type="mesh" mesh="wheel" euler="0 0 90"/> -->
 		    <geom type="sphere" rgba="0 0 1 1" size=".1"/>
-		    <inertial pos="0 0 0" mass="1" diaginertia="0.145833 0.145833 0.125"/>
+		    <inertial pos="0 0 1" mass="1" diaginertia="1 1 1"/>
 		</body>
 
 		<body name="wheel_2_body" pos="0 .5 1.05" quat="0.707106781 0 0 0.707106781">
-<!--		    <joint name="joint1" type="hinge" axis="0 0 1"/>-->
-		    <joint name="joint4" type="hinge" axis="1 0 0"/> <!-- GOOD -->
+		    <!--<joint name="joint1" type="hinge" axis="0 1 0"/>-->
+		    <joint name="joint4" type="hinge" axis="0 1 0"/> <!-- GOOD -->
 		    <!-- <geom type="mesh" mesh="wheel" euler="0 0 26.5"/> -->
 		    <geom type="sphere" rgba="0 0 1 1" size=".1"/>
-		    <inertial pos="0 0 0" mass="1" diaginertia="0.145833 0.145833 0.125"/>
+		    <inertial pos="0 0 1" mass="1" diaginertia="1 1 1"/>
 		</body>
 		<!--							sin(15 degree)	cos(15 degree)-->
 		<body name="wheel_3_body" pos="-.4 -.2325 1.05" quat="0.2588190451 0 0 -0.9659258263">
-<!--		    <joint name="joint2" type="hinge" axis="0 0 1"/>-->
-		    <joint name="joint5" type="hinge" axis="1 0 0"/>
+		    <!--<joint name="joint2" type="hinge" axis="0 1 0"/>-->
+		    <joint name="joint5" type="hinge" axis="0 1 0"/>
 		    <!-- <geom type="mesh" mesh="wheel" euler="0 0 -26.5"/> -->
 		    <geom type="sphere" rgba="0 0 1 1" size=".1"/>
-		    <inertial pos="0 0 0" mass="1" diaginertia="0.145833 0.145833 0.125"/>
+		    <inertial pos="0 0 1" mass="1" diaginertia="1 1 1"/>
 		</body>
         </body>
     </worldbody>
@@ -57,8 +57,8 @@
     <!-- attach actuators to joints -->
     <actuator>
 <!--        <motor name="joint0_motor" joint="joint0" ctrlrange="-15 15.0" ctrllimited="true"/>
-        <damper name="damper0" joint="joint0" kv="10" ctrlrange="0 1"/>-->
-<!--        <motor name="joint1_motor" joint="joint1" ctrlrange="-15 15.0" ctrllimited="true"/>
+        <damper name="damper0" joint="joint0" kv="10" ctrlrange="0 1"/>
+        <motor name="joint1_motor" joint="joint1" ctrlrange="-15 15.0" ctrllimited="true"/>
         <damper name="damper1" joint="joint1" kv="10" ctrlrange="0 1"/>-->
 <!--        <motor name="joint2_motor" joint="joint2" ctrlrange="-15 15.0" ctrllimited="true"/>
         <damper name="damper2" joint="joint2" kv="10" ctrlrange="0 1"/>-->
