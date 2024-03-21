@@ -7,13 +7,11 @@ import math
 m = mujoco.MjModel.from_xml_path('xml-triangle-car.xml')
 d = mujoco.MjData(m)
 
-
-
 with mujoco.viewer.launch_passive(m, d) as viewer:
-  # Close the viewer automatically after 30 wall-seconds.
+  # Close the viewer automatically after X wall-seconds.
   start = time.time()
   # Set an initial velocity for a joint (e.g., assuming joint index 0)
-  initial_velocity = 1  # set your desired initial velocity
+  initial_velocity = 4  # set your desired initial velocity
   print(m.actuator_user)
   #m.jnt_dofadr = initial_velocity
   #m.jnt_dofadr = -initial_velocity
@@ -25,18 +23,26 @@ with mujoco.viewer.launch_passive(m, d) as viewer:
         d.ctrl[0] = -initial_velocity*d.time
         d.ctrl[1] = initial_velocity*d.time
         d.ctrl[2] = -initial_velocity*d.time
+        if time.time() - start > 19.999:
+            mujoco.mj_resetData(m, d)
     if 20 <= (time.time() - start) < 40:
         d.ctrl[0] = initial_velocity*d.time
         d.ctrl[1] = -initial_velocity*d.time
         d.ctrl[2] = initial_velocity*d.time
+        if time.time() - start > 39.999:
+            mujoco.mj_resetData(m, d)
     if 40 <= (time.time() - start) < 60:
         d.ctrl[0] = initial_velocity*d.time
         d.ctrl[1] = initial_velocity*d.time
         d.ctrl[2] = -initial_velocity*d.time
+        if time.time() - start > 59.999:
+            mujoco.mj_resetData(m, d)
     if 60 <= (time.time() - start) < 120:
         d.ctrl[0] = -initial_velocity*d.time
         d.ctrl[1] = initial_velocity*d.time
         d.ctrl[2] = initial_velocity*d.time
+        if time.time() - start > 119.999:
+            mujoco.mj_resetData(m, d)
 
     # mj_step can be replaced with code that also evaluates
     # a policy and applies a control signal before stepping the physics.
