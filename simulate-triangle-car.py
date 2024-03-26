@@ -1,8 +1,11 @@
 import time
-
+import matplotlib.pyplot as plt
+import matplotlib
+import numpy as np
 import mujoco
 import mujoco.viewer
 import math
+import glfw
 
 m = mujoco.MjModel.from_xml_path('xml-triangle-car.xml')
 d = mujoco.MjData(m)
@@ -10,15 +13,22 @@ d = mujoco.MjData(m)
 with mujoco.viewer.launch_passive(m, d) as viewer:
   # Close the viewer automatically after X wall-seconds.
   start = time.time()
+  pos_matrix = []
+  vel_matrix = []
+  time_matrix = []
   # Set an initial velocity for a joint (e.g., assuming joint index 0)
-  initial_velocity = 4  # set your desired initial velocity
+  initial_velocity = 7  # set your desired initial velocity
   print(m.actuator_user)
   #m.jnt_dofadr = initial_velocity
   #m.jnt_dofadr = -initial_velocity
-  while viewer.is_running() and time.time() - start < 120:
-    print('pos', d.qpos[0])
+  while viewer.is_running() and time.time() - start < 40:
+    print('pos:', d.qpos[0])
+    pos_matrix.append(d.qpos[0])
+    print('vel:', d.qvel[0])
+    vel_matrix.append(d.qvel[0])
     step_start = time.time()
     print("Current time:", time.time() - start)
+    time_matrix.append(time.time() - start)
     if time.time() - start < 20:
         d.ctrl[0] = -initial_velocity*d.time
         d.ctrl[1] = initial_velocity*d.time
@@ -44,9 +54,11 @@ with mujoco.viewer.launch_passive(m, d) as viewer:
         if time.time() - start > 119.999:
             mujoco.mj_resetData(m, d)
 
+
     # mj_step can be replaced with code that also evaluates
     # a policy and applies a control signal before stepping the physics.
     mujoco.mj_step(m, d)
+
 
     # Example modification of a viewer option: toggle contact points every two seconds.
     with viewer.lock():
@@ -59,3 +71,9 @@ with mujoco.viewer.launch_passive(m, d) as viewer:
     time_until_next_step = m.opt.timestep - (time.time() - step_start)
     if time_until_next_step > 0:
       time.sleep(time_until_next_step)
+
+  matplotlib.use("TkAgg")
+  plt.plot(time_matrix, pos_matrix, label='time vs. position')
+  plt.plot(time_matrix, vel_matrix, label='time vs. velocity')
+  plt.legend()
+  plt.show()
