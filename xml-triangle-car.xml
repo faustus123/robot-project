@@ -24,78 +24,274 @@
         <body name="base" pos="0 0 0">
 	    <joint name="joint_base" type="free" axis="0 0 0"/>
             <geom name="baseplate_robot" type="mesh" mesh="baseplate" pos="0 0 1"/>
-            <inertial pos="0 0 1" mass="500" diaginertia="1 1 1"/>
+            <inertial pos="0 0 1" mass="150" diaginertia="1 1 1"/>
 
 		<!-- Attach wheels to the main body -->
 		<!--							cos(15 degree)	sin(15 degree)-->
-		<body name="wheel_1_body" pos=".4 -.2325 1.05" quat="0.9659258263 0 0 -0.2588190451 ">
-		    <!--<joint name="joint0" type="hinge" axis="-1 0 0" damping="0.1"/>-->
-    		    <joint name="joint3" type="hinge" axis="0 -1 0" damping="0.1"/>
-<!--		     <geom type="mesh" mesh="wheel" euler="0 0 90"/>-->
-		    <geom type="sphere" rgba="0 0 1 1" size=".1"/>
-		    <inertial pos="0 0 1" mass="1" diaginertia="0.0524193 0.0303095 0.0303095"/>
+		<body name="wheel_1_body" pos=".4 -.2325 1.05" quat="0.5 1 0 .866">
+		    <joint name="joint1" type="hinge" axis="0 0 1"/>
+		    <geom type="cylinder" size=".1 .0125 .01"/>
 
-<!--		    <body>
-		    	<joint name="joint3" type="hinge" axis="0 -1 0" damping="0.1"/>
-			<inertial pos="0 0 0" quat="0.711549 0.711549 0 0 " mass="0.001" diaginertia="0.00001 0.00001 0.00001" />
-			<geom size="0.12" quat="1 0 0 0" type="sphere" rgba="0.2 0.2 0.2 1" contype="1" conaffinity="0"/>
-		    </body>-->
+		    <!--<geom type="sphere" rgba="0 0 1 1" size=".1"/>-->
+		    <inertial pos="0 0 1" mass="1" diaginertia="0.5 0.5 1"/>
+
+			<body name="wheel_1_omni0" pos="0 -.085 0" quat="0 -1 0 1">
+			    <joint name="joint1_omni0" type="hinge" axis="0 0 1" damping="0.1"/>
+			    <geom type="cylinder" size=".02 .02 .02"/>
+
+			    <!--<geom type="sphere" rgba="0 0 1 1" size=".1"/>-->
+			    <inertial pos="0 0 1" mass="1" diaginertia="0.0524193 0.0303095 0.0303095"/>
+
+			</body>
+
+			<body name="wheel_1_omni1" pos="0 .085 0" quat="0 -1 0 1">
+			    <joint name="joint1_omni1" type="hinge" axis="0 0 1" damping="0.1"/>
+			    <geom type="cylinder" size=".02 .02 .02"/>
+
+			    <!--<geom type="sphere" rgba="0 0 1 1" size=".1"/>-->
+			    <inertial pos="0 0 1" mass="1" diaginertia="0.0524193 0.0303095 0.0303095"/>
+
+			</body>
+
+			<body name="wheel_1_omni2" pos=".085 0 0" quat="1 1 0 0">
+			    <joint name="joint1_omni2" type="hinge" axis="0 0 1" damping="0.1"/>
+			    <geom type="cylinder" size=".02 .02 .02"/>
+
+			    <!--<geom type="sphere" rgba="0 0 1 1" size=".1"/>-->
+			    <inertial pos="0 0 1" mass="1" diaginertia="0.0524193 0.0303095 0.0303095"/>
+
+			</body>
+
+			<body name="wheel_1_omni3" pos="-.085 0 0" quat="1 1 0 0">
+			    <joint name="joint1_omni3" type="hinge" axis="0 0 1" damping="0.1"/>
+			    <geom type="cylinder" size=".02 .02 .02"/>
+
+			    <!--<geom type="sphere" rgba="0 0 1 1" size=".1"/>-->
+			    <inertial pos="0 0 1" mass="1" diaginertia="0.0524193 0.0303095 0.0303095"/>
+
+			</body>
+
+			<body name="wheel_1_omni4" pos="-.06 -.06 0" quat="0.676 0.227 0.661 -.233">
+			    <joint name="joint1_omni4" type="hinge" axis="0 0 1" damping="0.1"/>
+			    <geom type="cylinder" size=".02 .02 .02"/>
+
+			    <!--<geom type="sphere" rgba="0 0 1 1" size=".1"/>-->
+			    <inertial pos="0 0 1" mass="1" diaginertia="0.0524193 0.0303095 0.0303095"/>
+
+			</body>
+
+			<body name="wheel_1_omni5" pos=".06 -.06 0" quat="0.661 -0.268 0.645 .274">
+			    <joint name="joint1_omni5" type="hinge" axis="0 0 1" damping="0.1"/>
+			    <geom type="cylinder" size=".02 .02 .02"/>
+
+			    <!--<geom type="sphere" rgba="0 0 1 1" size=".1"/>-->
+			    <inertial pos="0 0 1" mass="1" diaginertia="0.0524193 0.0303095 0.0303095"/>
+
+			</body>
+
+			<body name="wheel_1_omni6" pos=".06 .06 0" quat="0.276 -0.642 0.268 .663">
+			    <joint name="joint1_omni6" type="hinge" axis="0 0 1" damping="0.1"/>
+			    <geom type="cylinder" size=".02 .02 .02"/>
+
+			    <!--<geom type="sphere" rgba="0 0 1 1" size=".1"/>-->
+			    <inertial pos="0 0 1" mass="1" diaginertia="0.0524193 0.0303095 0.0303095"/>
+
+			</body>
+
+			<body name="wheel_1_omni7" pos="-.06 .06 0" quat="-0.276 -0.642 -0.268 .663">
+			    <joint name="joint1_omni7" type="hinge" axis="0 0 1" damping="0.1"/>
+			    <geom type="cylinder" size=".02 .02 .02"/>
+
+			    <!--<geom type="sphere" rgba="0 0 1 1" size=".1"/>-->
+			    <inertial pos="0 0 1" mass="1" diaginertia="0.0524193 0.0303095 0.0303095"/>
+
+			</body>
+
 		</body>
 
-		<body name="wheel_2_body" pos="0 .46 1.05" quat="0.707106781 0 0 0.707106781">
-		    <!--<joint name="joint1" type="hinge" axis="-1 0 0" damping="0.1"/>-->
-		    <joint name="joint4" type="hinge" axis="0 -1 0" damping="0.1"/> <!-- GOOD -->
-		    <!-- <geom type="mesh" mesh="wheel" euler="0 0 26.5"/> -->
-		    <geom type="sphere" rgba="0 0 1 1" size=".1"/>
-		    <inertial pos="0 0 1" mass="1" diaginertia="0.0524193 0.0303095 0.0303095"/>
+		<body name="wheel_2_body" pos="0 .46 1.05" quat="1 1 0 0"> <!-- This quat makes cylinder parallel with 3D y-axis and straight up -->
+		    <joint name="joint2" type="hinge" axis="0 0 1"/> <!-- GOOD -->
+		    <geom type="cylinder" size=".1 .01 .01"/>
+		    <inertial pos="0 0 1" mass="1" diaginertia="0.5 0.5 1"/>
 
-<!--    		    <body>
-		    	<joint name="joint1" type="hinge" axis="-1 0 0" damping="0.1"/>
-			<inertial pos="0 0 0" quat="0.711549 0.711549 0 0 " mass="0.001" diaginertia="0.00001 0.00001 0.00001" />
-			<geom size="0.12" quat="1 0 0 0" type="sphere" rgba="0.2 0.2 0.2 1" contype="1" conaffinity="0"/>
-		    </body>-->
+			<body name="wheel_2_omni0" pos="0 -.085 0" quat="0 -1 0 1">
+			    <joint name="joint2_omni0" type="hinge" axis="0 0 1" damping="0.1"/>
+			    <geom type="cylinder" size=".02 .02 .02"/>
+
+			    <!--<geom type="sphere" rgba="0 0 1 1" size=".1"/>-->
+			    <inertial pos="0 0 1" mass="1" diaginertia="0.0524193 0.0303095 0.0303095"/>
+
+			</body>
+
+			<body name="wheel_2_omni1" pos="0 .085 0" quat="0 -1 0 1">
+			    <joint name="joint2_omni1" type="hinge" axis="0 0 1" damping="0.1"/>
+			    <geom type="cylinder" size=".02 .02 .02"/>
+
+			    <!--<geom type="sphere" rgba="0 0 1 1" size=".1"/>-->
+			    <inertial pos="0 0 1" mass="1" diaginertia="0.0524193 0.0303095 0.0303095"/>
+
+			</body>
+
+			<body name="wheel_2_omni2" pos=".085 0 0" quat="1 1 0 0">
+			    <joint name="joint2_omni2" type="hinge" axis="0 0 1" damping="0.1"/>
+			    <geom type="cylinder" size=".02 .02 .02"/>
+
+			    <!--<geom type="sphere" rgba="0 0 1 1" size=".1"/>-->
+			    <inertial pos="0 0 1" mass="1" diaginertia="0.0524193 0.0303095 0.0303095"/>
+
+			</body>
+
+			<body name="wheel_2_omni3" pos="-.085 0 0" quat="1 1 0 0">
+			    <joint name="joint2_omni3" type="hinge" axis="0 0 1" damping="0.1"/>
+			    <geom type="cylinder" size=".02 .02 .02"/>
+
+			    <!--<geom type="sphere" rgba="0 0 1 1" size=".1"/>-->
+			    <inertial pos="0 0 1" mass="1" diaginertia="0.0524193 0.0303095 0.0303095"/>
+
+			</body>
+
+			<body name="wheel_2_omni4" pos="-.06 -.06 0" quat="0.676 0.227 0.661 -.233">
+			    <joint name="joint2_omni4" type="hinge" axis="0 0 1" damping="0.1"/>
+			    <geom type="cylinder" size=".02 .02 .02"/>
+
+			    <!--<geom type="sphere" rgba="0 0 1 1" size=".1"/>-->
+			    <inertial pos="0 0 1" mass="1" diaginertia="0.0524193 0.0303095 0.0303095"/>
+
+			</body>
+
+			<body name="wheel_2_omni5" pos=".06 -.06 0" quat="0.661 -0.268 0.645 .274">
+			    <joint name="joint2_omni5" type="hinge" axis="0 0 1" damping="0.1"/>
+			    <geom type="cylinder" size=".02 .02 .02"/>
+
+			    <!--<geom type="sphere" rgba="0 0 1 1" size=".1"/>-->
+			    <inertial pos="0 0 1" mass="1" diaginertia="0.0524193 0.0303095 0.0303095"/>
+
+			</body>
+
+			<body name="wheel_2_omni6" pos=".06 .06 0" quat="0.276 -0.642 0.268 .663">
+			    <joint name="joint2_omni6" type="hinge" axis="0 0 1" damping="0.1"/>
+			    <geom type="cylinder" size=".02 .02 .02"/>
+
+			    <!--<geom type="sphere" rgba="0 0 1 1" size=".1"/>-->
+			    <inertial pos="0 0 1" mass="1" diaginertia="0.0524193 0.0303095 0.0303095"/>
+
+			</body>
+
+			<body name="wheel_2_omni7" pos="-.06 .06 0" quat="-0.276 -0.642 -0.268 .663">
+			    <joint name="joint2_omni7" type="hinge" axis="0 0 1" damping="0.1"/>
+			    <geom type="cylinder" size=".02 .02 .02"/>
+
+			    <!--<geom type="sphere" rgba="0 0 1 1" size=".1"/>-->
+			    <inertial pos="0 0 1" mass="1" diaginertia="0.0524193 0.0303095 0.0303095"/>
+
+			</body>
+
 		</body>
 
-		<!--							sin(15 degree)	cos(15 degree)-->
-		<body name="wheel_3_body" pos="-.4 -.2325 1.05" quat="0.2588190451 0 0 -0.9659258263">
-<!--		    <joint name="joint2" type="hinge" axis="-1 0 0" damping="0.1"/>-->
-		    <joint name="joint5" type="hinge" axis="0 -1 0" damping="0.1"/>
-		    <!-- <geom type="mesh" mesh="wheel" euler="0 0 -26.5"/> -->
-		    <geom type="sphere" rgba="0 0 1 1" size=".1"/>
-		    <inertial pos="0 0 1" mass="1" diaginertia="0.0524193 0.0303095 0.0303095"/>
+		<body name="wheel_3_body" pos="-.4 -.2325 1.05" quat="-0.5 1 0 .866">
+		    <joint name="joint3" type="hinge" axis="0 0 1"/>
+		    <geom type="cylinder" size=".1 .01 .01"/>
+		    <inertial pos="0 0 1" mass="1" diaginertia="0.5 0.5 1"/>
 
-<!--		    <body>
-		    	<joint name="joint2" type="hinge" axis="-1 0 0" damping="0.1"/>
-			<inertial pos="0 0 0" quat="0.711549 0.711549 0 0 " mass="0.001" diaginertia="0.00001 0.00001 0.00001" />
-			<geom size="0.12" quat="1 0 0 0" type="sphere" rgba="0.2 0.2 0.2 1" contype="1" conaffinity="0"/>
-		    </body>-->
+			<body name="wheel_3_omni0" pos="0 -.085 0" quat="0 -1 0 1">
+			    <joint name="joint3_omni0" type="hinge" axis="0 0 1" damping="0.1"/>
+			    <geom type="cylinder" size=".02 .02 .02"/>
+
+			    <!--<geom type="sphere" rgba="0 0 1 1" size=".1"/>-->
+			    <inertial pos="0 0 1" mass="1" diaginertia="0.0524193 0.0303095 0.0303095"/>
+
+			</body>
+
+			<body name="wheel_3_omni1" pos="0 .085 0" quat="0 -1 0 1">
+			    <joint name="joint3_omni1" type="hinge" axis="0 0 1" damping="0.1"/>
+			    <geom type="cylinder" size=".02 .02 .02"/>
+
+			    <!--<geom type="sphere" rgba="0 0 1 1" size=".1"/>-->
+			    <inertial pos="0 0 1" mass="1" diaginertia="0.0524193 0.0303095 0.0303095"/>
+
+			</body>
+
+			<body name="wheel_3_omni2" pos=".085 0 0" quat="1 1 0 0">
+			    <joint name="joint3_omni2" type="hinge" axis="0 0 1" damping="0.1"/>
+			    <geom type="cylinder" size=".02 .02 .02"/>
+
+			    <!--<geom type="sphere" rgba="0 0 1 1" size=".1"/>-->
+			    <inertial pos="0 0 1" mass="1" diaginertia="0.0524193 0.0303095 0.0303095"/>
+
+			</body>
+
+			<body name="wheel_3_omni3" pos="-.085 0 0" quat="1 1 0 0">
+			    <joint name="joint3_omni3" type="hinge" axis="0 0 1" damping="0.1"/>
+			    <geom type="cylinder" size=".02 .02 .02"/>
+
+			    <!--<geom type="sphere" rgba="0 0 1 1" size=".1"/>-->
+			    <inertial pos="0 0 1" mass="1" diaginertia="0.0524193 0.0303095 0.0303095"/>
+
+			</body>
+
+			<body name="wheel_3_omni4" pos="-.06 -.06 0" quat="0.676 0.227 0.661 -.233">
+			    <joint name="joint3_omni4" type="hinge" axis="0 0 1" damping="0.1"/>
+			    <geom type="cylinder" size=".02 .02 .02"/>
+
+			    <!--<geom type="sphere" rgba="0 0 1 1" size=".1"/>-->
+			    <inertial pos="0 0 1" mass="1" diaginertia="0.0524193 0.0303095 0.0303095"/>
+
+			</body>
+
+			<body name="wheel_3_omni5" pos=".06 -.06 0" quat="0.661 -0.268 0.645 .274">
+			    <joint name="joint3_omni5" type="hinge" axis="0 0 1" damping="0.1"/>
+			    <geom type="cylinder" size=".02 .02 .02"/>
+
+			    <!--<geom type="sphere" rgba="0 0 1 1" size=".1"/>-->
+			    <inertial pos="0 0 1" mass="1" diaginertia="0.0524193 0.0303095 0.0303095"/>
+
+			</body>
+
+			<body name="wheel_3_omni6" pos=".06 .06 0" quat="0.276 -0.642 0.268 .663">
+			    <joint name="joint3_omni6" type="hinge" axis="0 0 1" damping="0.1"/>
+			    <geom type="cylinder" size=".02 .02 .02"/>
+
+			    <!--<geom type="sphere" rgba="0 0 1 1" size=".1"/>-->
+			    <inertial pos="0 0 1" mass="1" diaginertia="0.0524193 0.0303095 0.0303095"/>
+
+			</body>
+
+			<body name="wheel_3_omni7" pos="-.06 .06 0" quat="-0.276 -0.642 -0.268 .663">
+			    <joint name="joint3_omni7" type="hinge" axis="0 0 1" damping="0.1"/>
+			    <geom type="cylinder" size=".02 .02 .02"/>
+
+			    <!--<geom type="sphere" rgba="0 0 1 1" size=".1"/>-->
+			    <inertial pos="0 0 1" mass="1" diaginertia="0.0524193 0.0303095 0.0303095"/>
+
+			</body>
 		</body>
+
+
         </body>
     </worldbody>
 
     <!-- attach actuators to joints -->
     <actuator>
-<!--        <motor name="joint0_motor" joint="joint0" ctrlrange="-75 75.0" ctrllimited="true"/>
-        <damper name="damper0" joint="joint0" kv="10" ctrlrange="0 1"/>
         <motor name="joint1_motor" joint="joint1" ctrlrange="-75 75.0" ctrllimited="true"/>
-        <damper name="damper1" joint="joint1" kv="10" ctrlrange="0 1"/>
+<!--        <damper name="damper1" joint="joint1" kv="10" ctrlrange="0 1"/>-->
         <motor name="joint2_motor" joint="joint2" ctrlrange="-75 75.0" ctrllimited="true"/>
-        <damper name="damper2" joint="joint2" kv="10" ctrlrange="0 1"/>-->
-	<motor name="joint3_motor" joint="joint3" ctrlrange="-75 75.0" ctrllimited="true"/>
-        <motor name="joint4_motor" joint="joint4" ctrlrange="-75 75.0" ctrllimited="true"/>
-	<motor name="joint5_motor" joint="joint5" ctrlrange="-75 75.0" ctrllimited="true"/>
+<!--        <damper name="damper2" joint="joint2" kv="10" ctrlrange="0 1"/>-->
+        <motor name="joint3_motor" joint="joint3" ctrlrange="-75 75.0" ctrllimited="true"/>
+<!--        <damper name="damper3" joint="joint3" kv="10" ctrlrange="0 1"/>-->
     </actuator>
 
   <sensor>
-<!--    <actuatorfrc name="joint0_motor" actuator="joint0_motor"/>
+
     <actuatorfrc name="joint1_motor" actuator="joint1_motor"/>
     <actuatorfrc name="joint2_motor" actuator="joint2_motor"/>
-    <actuatorfrc name="damper0" actuator="damper0"/>
-    <actuatorfrc name="damper1" actuator="damper1"/>
+    <actuatorfrc name="joint3_motor" actuator="joint3_motor"/>
+<!--    <actuatorfrc name="damper1" actuator="damper1"/>
     <actuatorfrc name="damper2" actuator="damper2"/>
-    <jointactuatorfrc name="joint0" joint="joint0"/>
+    <actuatorfrc name="damper3" actuator="damper3"/>-->
+
     <jointactuatorfrc name="joint1" joint="joint1"/>
-    <jointactuatorfrc name="joint2" joint="joint2"/>-->
+    <jointactuatorfrc name="joint2" joint="joint2"/>
+    <jointactuatorfrc name="joint3" joint="joint3"/>
   </sensor>
 
 </mujoco>

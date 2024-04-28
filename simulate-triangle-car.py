@@ -16,41 +16,64 @@ with mujoco.viewer.launch_passive(m, d) as viewer:
   pos_matrix = []
   vel_matrix = []
   time_matrix = []
+  limit = 50
   # Set an initial velocity for a joint (e.g., assuming joint index 0)
-  initial_velocity = 7  # set your desired initial velocity
+  initial_velocity = 2  # set your desired initial velocity
   print(m.actuator_user)
+  #qpos[1] shows the position of the robot baseplate
+
   #m.jnt_dofadr = initial_velocity
   #m.jnt_dofadr = -initial_velocity
   while viewer.is_running() and time.time() - start < 40:
-    print('pos:', d.qpos[0])
-    pos_matrix.append(d.qpos[0])
-    print('vel:', d.qvel[0])
-    vel_matrix.append(d.qvel[0])
+    print('pos:', sum(d.qpos))
+    pos_matrix.append(sum(d.qpos))
+    print('vel:', sum(d.qvel))
+    vel_matrix.append(sum(d.qvel))
     step_start = time.time()
     print("Current time:", time.time() - start)
     time_matrix.append(time.time() - start)
     if time.time() - start < 20:
-        d.ctrl[0] = -initial_velocity*d.time
-        d.ctrl[1] = initial_velocity*d.time
-        d.ctrl[2] = -initial_velocity*d.time
+        if -limit < d.ctrl[0] < limit:
+            d.ctrl[0] = -initial_velocity*d.time
+            d.ctrl[1] = initial_velocity*d.time
+            d.ctrl[2] = -initial_velocity*d.time
+        else:
+            d.ctrl[0] = d.ctrl[0]
+            d.ctrl[1] = d.ctrl[1]
+            d.ctrl[2] = d.ctrl[2]
         if time.time() - start > 19.999:
             mujoco.mj_resetData(m, d)
     if 20 <= (time.time() - start) < 40:
-        d.ctrl[0] = initial_velocity*d.time
-        d.ctrl[1] = -initial_velocity*d.time
-        d.ctrl[2] = initial_velocity*d.time
+        if -limit < d.ctrl[0] < limit:
+            d.ctrl[0] = initial_velocity*d.time
+            d.ctrl[1] = -initial_velocity*d.time
+            d.ctrl[2] = initial_velocity*d.time
+        else:
+            d.ctrl[0] = d.ctrl[0]
+            d.ctrl[1] = d.ctrl[1]
+            d.ctrl[2] = d.ctrl[2]
         if time.time() - start > 39.999:
             mujoco.mj_resetData(m, d)
     if 40 <= (time.time() - start) < 60:
-        d.ctrl[0] = initial_velocity*d.time
-        d.ctrl[1] = initial_velocity*d.time
-        d.ctrl[2] = -initial_velocity*d.time
+        if -limit < d.ctrl[0] < limit:
+            d.ctrl[0] = initial_velocity*d.time
+            d.ctrl[1] = initial_velocity*d.time
+            d.ctrl[2] = -initial_velocity*d.time
+        else:
+            d.ctrl[0] = d.ctrl[0]
+            d.ctrl[1] = d.ctrl[1]
+            d.ctrl[2] = d.ctrl[2]
         if time.time() - start > 59.999:
             mujoco.mj_resetData(m, d)
     if 60 <= (time.time() - start) < 120:
-        d.ctrl[0] = -initial_velocity*d.time
-        d.ctrl[1] = initial_velocity*d.time
-        d.ctrl[2] = initial_velocity*d.time
+        if -limit < d.ctrl[0] < limit:
+            d.ctrl[0] = -initial_velocity*d.time
+            d.ctrl[1] = initial_velocity*d.time
+            d.ctrl[2] = initial_velocity*d.time
+        else:
+            d.ctrl[0] = d.ctrl[0]
+            d.ctrl[1] = d.ctrl[1]
+            d.ctrl[2] = d.ctrl[2]
         if time.time() - start > 119.999:
             mujoco.mj_resetData(m, d)
 
@@ -74,6 +97,8 @@ with mujoco.viewer.launch_passive(m, d) as viewer:
 
   matplotlib.use("TkAgg")
   plt.plot(time_matrix, pos_matrix, label='time vs. position')
-  plt.plot(time_matrix, vel_matrix, label='time vs. velocity')
+  plt.xlabel("time (seconds)")
+  plt.ylabel("position (meters)")
+  #plt.plot(time_matrix, vel_matrix, label='time vs. velocity')
   plt.legend()
   plt.show()
