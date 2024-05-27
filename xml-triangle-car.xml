@@ -29,7 +29,7 @@
 			<!-- Attach wheels to the main body -->
 			<!--							cos(15 degree)	sin(15 degree)-->
 			<body name="wheel_1_body" pos=".4 -.2325 1.05" quat="0.5 1 0 .866">
-				<joint name="joint1" type="hinge" axis="0 0 1" damping="5"/>
+				<joint name="joint1" type="hinge" axis="0 0 1" damping="50"/>
 				<geom type="cylinder" size=".1 .0125 .01"/>
 
 				<!--<geom type="sphere" rgba="0 0 1 1" size=".1"/>-->
@@ -110,7 +110,7 @@
 
 				<!-- Second Wheel -->
 
-				<body name="wheel_1_body1" pos="0 0 0.03" quat="0.195 0 0 0.975">
+				<body name="wheel_1_body1" pos="0 0 0.04" quat="0.195 0 0 0.975">
 					<geom type="cylinder" size=".1 .0125 .01"/>
 
 					<!--<geom type="sphere" rgba="0 0 1 1" size=".1"/>-->
@@ -193,8 +193,8 @@
 			</body>
 
 			<body name="wheel_2_body" pos="0 .46 1.05" quat="1 1 0 0"> <!-- This quat makes cylinder parallel with 3D y-axis and straight up -->
-				<joint name="joint2" type="hinge" axis="0 0 1" damping="5"/> <!-- GOOD -->
-				<geom type="cylinder" size=".1 .01 .01"/>
+				<joint name="joint2" type="hinge" axis="0 0 1" damping="50"/> <!-- GOOD -->
+				<geom type="cylinder" size=".1 .0125 .01"/>
 				<inertial pos="0 0 1" mass="5" diaginertia="0.5 0.5 1"/>
 
 				<body name="wheel_2_omni0" pos="0 -.085 0" quat="0 -1 0 1">
@@ -273,7 +273,7 @@
 
 				<!-- Second Second Wheel -->
 
-				<body name="wheel_2_body1" pos="0 0 0.03" quat="0.195 0 0 0.975">
+				<body name="wheel_2_body1" pos="0 0 0.04" quat="0.195 0 0 0.975">
 					<geom type="cylinder" size=".1 .0125 .01"/>
 
 					<!--<geom type="sphere" rgba="0 0 1 1" size=".1"/>-->
@@ -353,8 +353,8 @@
 			</body>
 
 			<body name="wheel_3_body" pos="-.4 -.2325 1.05" quat="-0.5 1 0 .866">
-				<joint name="joint3" type="hinge" axis="0 0 1" damping="5"/>
-				<geom type="cylinder" size=".1 .01 .01"/>
+				<joint name="joint3" type="hinge" axis="0 0 1" damping="50"/>
+				<geom type="cylinder" size=".1 .0125 .01"/>
 				<inertial pos="0 0 1" mass="5" diaginertia="0.5 0.5 1"/>
 
 				<body name="wheel_3_omni0" pos="0 -.085 0" quat="0 -1 0 1">
@@ -433,7 +433,7 @@
 
 				<!-- Second Wheel -->
 
-			<body name="wheel_3_body1" pos="0 0 0.03" quat="0.195 0 0 0.975">
+			<body name="wheel_3_body1" pos="0 0 0.04" quat="0.195 0 0 0.975">
 				<geom type="cylinder" size=".1 .0125 .01"/>
 
 				<!--<geom type="sphere" rgba="0 0 1 1" size=".1"/>-->

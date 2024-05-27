@@ -16,7 +16,7 @@ with mujoco.viewer.launch_passive(m, d) as viewer:
 	pos_matrix = []
 	vel_matrix = []
 	time_matrix = []
-	limit = 50
+	limit = 75
 	# Set an initial velocity for a joint (e.g., assuming joint index 0)
 	initial_velocity = 5  # set your desired initial velocity
 	print(m.actuator_user)
@@ -34,9 +34,9 @@ with mujoco.viewer.launch_passive(m, d) as viewer:
 		time_matrix.append(time.time() - start)
 		if time.time() - start < 20:
 			if -limit < d.ctrl[0] < limit:
-				d.ctrl[0] = -initial_velocity*d.time
-				d.ctrl[1] = initial_velocity*d.time
-				d.ctrl[2] = -initial_velocity*d.time
+				d.ctrl[0] = 0
+				d.ctrl[1] = limit
+				d.ctrl[2] = -limit
 			else:
 				d.ctrl[0] = d.ctrl[0]
 				d.ctrl[1] = d.ctrl[1]
@@ -45,9 +45,9 @@ with mujoco.viewer.launch_passive(m, d) as viewer:
 				mujoco.mj_resetData(m, d)
 		if 20 <= (time.time() - start) < 40:
 			if -limit < d.ctrl[0] < limit:
-				d.ctrl[0] = initial_velocity*d.time
-				d.ctrl[1] = -initial_velocity*d.time
-				d.ctrl[2] = initial_velocity*d.time
+				d.ctrl[0] = limit
+				d.ctrl[1] = 0
+				d.ctrl[2] = limit
 			else:
 				d.ctrl[0] = d.ctrl[0]
 				d.ctrl[1] = d.ctrl[1]
@@ -56,9 +56,9 @@ with mujoco.viewer.launch_passive(m, d) as viewer:
 				mujoco.mj_resetData(m, d)
 		if 40 <= (time.time() - start) < 60:
 			if -limit < d.ctrl[0] < limit:
-				d.ctrl[0] = initial_velocity*d.time
-				d.ctrl[1] = initial_velocity*d.time
-				d.ctrl[2] = -initial_velocity*d.time
+				d.ctrl[0] = limit
+				d.ctrl[1] = limit
+				d.ctrl[2] = -limit
 			else:
 				d.ctrl[0] = d.ctrl[0]
 				d.ctrl[1] = d.ctrl[1]
@@ -67,9 +67,9 @@ with mujoco.viewer.launch_passive(m, d) as viewer:
 				mujoco.mj_resetData(m, d)
 		if 60 <= (time.time() - start) < 120:
 			if -limit < d.ctrl[0] < limit:
-				d.ctrl[0] = -initial_velocity*d.time
-				d.ctrl[1] = initial_velocity*d.time
-				d.ctrl[2] = initial_velocity*d.time
+				d.ctrl[0] = -limit
+				d.ctrl[1] = limit
+				d.ctrl[2] = limit
 			else:
 				d.ctrl[0] = d.ctrl[0]
 				d.ctrl[1] = d.ctrl[1]
