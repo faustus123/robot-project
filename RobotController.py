@@ -6,7 +6,7 @@ import sys
 from inputs import get_gamepad
 from inputs import get_key
 
-
+from approxeng.input.selectbinder import ControllerResource
 
 
 import sys
@@ -39,6 +39,89 @@ def SetEnableAll(value):
 	ser.write(("enable S6 " + str(value)+ '\n').encode())
 	ser.write(("enable S7 " + str(value)+ '\n').encode())
 
+#-------------------------------------
+# ControllerSupportApproxEngLib - Robot-specific input library
+#-------------------------------------
+def ControllerSupportApproxEngLib():
+	last_R3 = False
+	last_L3 = False
+	last_left_joy_V = -1
+	last_left_joy_H = -1
+	last_right_joy_V = -1
+	last_right_joy_H = -1
+
+	left_joy_V = 0
+	left_joy_H = 0
+	right_joy_V = 0
+	right_joy_H = 0
+
+	last_P1 = -1
+	last_P2 = -1
+	last_P3 = -1
+
+	P1 = 0
+	P2 = 0
+	P3 = 0
+	while True:
+		try:
+			with ControllerResource() as joystick:
+				print('Found a joystick and connected')
+				while joystick.connected:
+					presses = joystick.check_presses()
+					lx, ly = joystick['l']
+					rx, ry = joystick['r']
+					ls = joystick['ls']
+					rs = joystick['rs']
+
+					if presses['ls']:
+						SetEnableAll(0)
+					if presses['rs']:
+						SetEnableAll(1)
+					
+					P1 = (2.0/3.0)*lx+(1.0/3.0)*rx
+					P2 = (-1.0/3.0)*lx+(1.0/math.sqrt(3.0))*ly+(1.0/3.0)*rx
+					P3 = (-1.0/3.0)*lx-(1.0/math.sqrt(3.0))*ly+(1.0/3.0)*rx
+
+					print("=======")
+					print("P1:", P1)
+					print("P2:", P2)
+					print("P3:", P3)
+					print("=======")
+
+					if( abs(P1 ) < 0.15 ) :  P1 = 0
+					if( abs(P2 ) < 0.15 ) :  P2 = 0
+					if( abs(P3 ) < 0.15 ) :  P3 = 0
+
+					if( abs( P1 - last_P1 ) > 0.05 ):
+								last_P1 = P1
+								cmd = "set M0 " + str(P1)
+								ser.write((cmd + '\n').encode())
+						#while ser.in_waiting > 0:
+								#response = ser.readline().decode('utf-8').rstrip()
+								#print(f"ESP32 Response: {response}")
+
+					if( abs( P2 - last_P2 ) > 0.05 ):
+								last_P2 = P2
+								cmd = "set M1 " + str(P2)
+								ser.write((cmd + '\n').encode())
+						#while ser.in_waiting > 0:
+								#response = ser.readline().decode('utf-8').rstrip()
+								#print(f"ESP32 Response: {response}")
+
+					if( abs( P3 - last_P3 ) > 0.05 ):
+								last_P3 = P3
+								cmd = "set M3 " + str(P3)
+								ser.write((cmd + '\n').encode())
+						#while ser.in_waiting > 0:
+								#response = ser.readline().decode('utf-8').rstrip()
+								#print(f"ESP32 Response: {response}")
+
+			# Joystick disconnected...
+			print('Connection to joystick lost')
+		except IOError:
+			# No joystick found, wait for a bit before trying again
+			print('Unable to find any joysticks')
+			time.sleep(1.0)
 
 
 #-------------------------------------
@@ -168,7 +251,11 @@ def KeyboardSupport():
 						SetEnableAll(1)
 						print("R3 pressed")
 					case "ABS_X":
-						left_joy_H = event.state / MAX_JOY_VAL
+						if controller_type == "PS4":
+							if event.state == 0:
+								left_joy_H = event.state / MAX_JOY_VAL
+						else:
+							left_joy_H = event.state / MAX_JOY_VAL
 					case "ABS_Y":
 						left_joy_V = event.state / MAX_JOY_VAL
 					case "ABS_RX":
@@ -252,6 +339,8 @@ if controller_type == "Other":
 	MAX_JOY_VAL = math.pow(2, 15)
 	ControllerSupport()
 
+if controller_type == "approxenglib":
+	ControllerSupportApproxEngLib()
 
 if controller_type == "Keyboard":
 	KeyboardSupport()
