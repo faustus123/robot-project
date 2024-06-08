@@ -3,46 +3,132 @@ import inputs
 import time
 import math
 import sys
-from inputs import get_gamepad
-from inputs import get_key
-
-from approxeng.input.selectbinder import ControllerResource
-
-
-import sys
 import os
 import subprocess
 import threading
-
-from datetime import datetime
 from sys import platform
+from inputs import get_gamepad
+from inputs import get_key
+from datetime import datetime
 
-# Open serial port
-ser = serial.Serial('/dev/ttyUSB0', 115200, timeout=1)
-time.sleep(2)  # Wait for the serial connection to initialize
+from approxeng.input.selectbinder import ControllerResource
 
-#-------------------------------------
-# SetEnableAll
-#-------------------------------------
-def SetEnableAll(value):
-	ser.write(("enable M0 " + str(value)+ '\n').encode())
-	ser.write(("enable M1 " + str(value)+ '\n').encode())
-	ser.write(("enable M2 " + str(value)+ '\n').encode())
-	ser.write(("enable M3 " + str(value)+ '\n').encode())
+import websocket
 
-	ser.write(("enable S0 " + str(value)+ '\n').encode())
-	ser.write(("enable S1 " + str(value)+ '\n').encode())
-	ser.write(("enable S2 " + str(value)+ '\n').encode())
-	ser.write(("enable S3 " + str(value)+ '\n').encode())
-	ser.write(("enable S4 " + str(value)+ '\n').encode())
-	ser.write(("enable S5 " + str(value)+ '\n').encode())
-	ser.write(("enable S6 " + str(value)+ '\n').encode())
-	ser.write(("enable S7 " + str(value)+ '\n').encode())
+class DetermineInput():
+	def __init__(self):
+		if len(sys.argv) > 1:
+			self.config = sys.argv[1]
+			print("Setting config to: %s" % self.config)
+
+			DetermineInput.Setup(self.config)
+			# DetermineInput.SetupController(self.controller_type)
+
+	def Setup(config):
+		if config == "s" or config == "S":
+			serial = Serial("/dev/ttyUSB0")
+			ControllerSupportApproxEngLib(config)
+		elif config == "w" or config == "W":
+			web = WebSocket()
+			ControllerSupportApproxEngLib(config)
+
+	def SetupController(controller_type):
+		if controller_type == "PS4":
+			MAX_TRIG_VAL = 255
+			MAX_JOY_VAL = 255
+			ControllerSupport()
+
+		if controller_type == "Other":
+			MAX_TRIG_VAL = math.pow(2, 8)
+			MAX_JOY_VAL = math.pow(2, 15)
+			ControllerSupport()
+
+		if controller_type == "approxenglib":
+			ControllerSupportApproxEngLib()
+
+		if controller_type == "Keyboard":
+			KeyboardSupport() # To-Do
+
+class WebSocket():
+	host = "192.168.1.52"
+	port = "81"
+	def __init__(self):
+		WebSocket.host = "192.168.1.52"
+		WebSocket.port = "81"
+
+		if len(sys.argv) > 1:
+			WebSocket.host = sys.argv[2]
+		print("Setting host to: %s" % WebSocket.host)
+		threading.Thread(target=WebSocket.WSThread).start()
+		last_move_command_send_time = datetime.now()
+
+	def on_ws_message(ws, message):
+		# print(f"Received '{message}'")
+		pass
+
+	def on_ws_error(ws, error):
+		print(f"Error: {error}")
+
+	def on_ws_close(ws, close_status_code, close_msg):
+		print("### closed ###")
+
+	def on_ws_open(ws):
+		print("Connection established")
+		# ws.send("Hello ESP8266")
+
+	def WSThread():
+		global ws
+		ws = websocket.WebSocketApp("ws://" + WebSocket.host + ":" + WebSocket.port + "/",
+								on_open=WebSocket.on_ws_open,
+								on_message=WebSocket.on_ws_message,
+								on_error=WebSocket.on_ws_error,
+								on_close=WebSocket.on_ws_close)
+		print("Websockets thread started.")
+		ws.run_forever()
+
+	def SetEnableAllWebSockets(val):
+		for i in range(4): ws.send("enable M" + str(i) + " " + str(val))
+		for i in range(8): ws.send("enable S" + str(i) + " " + str(val))
+
+
+class Serial():
+	def __init__(self, path):
+		if len(sys.argv) > 1:
+			self.ser = serial.Serial("/dev/" + path, 115200, timeout=1)
+		else:
+			self.ser = serial.Serial("/dev/TTYUSB0" + path, 115200, timeout=1)
+		print("Setting up serial, please wait...")
+		time.sleep(2)  # Wait for the serial connection to initialize
+
+	#-------------------------------------
+	# SetEnableAllSerial - Only runs on serial
+	#-------------------------------------
+	def SetEnableAllSerial(value):
+		Serial.ser.write(("enable M0 " + str(value)+ '\n').encode())
+		Serial.ser.write(("enable M1 " + str(value)+ '\n').encode())
+		Serial.ser.write(("enable M2 " + str(value)+ '\n').encode())
+		Serial.ser.write(("enable M3 " + str(value)+ '\n').encode())
+
+		Serial.ser.write(("enable S0 " + str(value)+ '\n').encode())
+		Serial.ser.write(("enable S1 " + str(value)+ '\n').encode())
+		Serial.ser.write(("enable S2 " + str(value)+ '\n').encode())
+		Serial.ser.write(("enable S3 " + str(value)+ '\n').encode())
+		Serial.ser.write(("enable S4 " + str(value)+ '\n').encode())
+		Serial.ser.write(("enable S5 " + str(value)+ '\n').encode())
+		Serial.ser.write(("enable S6 " + str(value)+ '\n').encode())
+		Serial.ser.write(("enable S7 " + str(value)+ '\n').encode())
+
+	def WriteToSerial(msg):
+		Serial.ser.write((msg).encode())
+		#while ser.in_waiting > 0:
+			#response = ser.readline().decode('utf-8').rstrip()
+			#print(f"ESP32 Response: {response}")
 
 #-------------------------------------
 # ControllerSupportApproxEngLib - Robot-specific input library
 #-------------------------------------
-def ControllerSupportApproxEngLib():
+def ControllerSupportApproxEngLib(flag):
+
 	last_R3 = False
 	last_L3 = False
 	last_left_joy_V = -1
@@ -74,9 +160,15 @@ def ControllerSupportApproxEngLib():
 					rs = joystick['rs']
 
 					if presses['ls']:
-						SetEnableAll(0)
+						if flag == "s":
+							Serial.SetEnableAllSerial(0)
+						else:
+							WebSocket.SetEnableAllWebSockets(0)
 					if presses['rs']:
-						SetEnableAll(1)
+						if flag == "s":
+							Serial.SetEnableAllSerial(1)
+						else:
+							WebSocket.SetEnableAllWebSockets(1)
 					
 					P1 = (2.0/3.0)*lx+(1.0/3.0)*rx
 					P2 = (-1.0/3.0)*lx+(1.0/math.sqrt(3.0))*ly+(1.0/3.0)*rx
@@ -93,29 +185,31 @@ def ControllerSupportApproxEngLib():
 					if( abs(P3 ) < 0.15 ) :  P3 = 0
 
 					if( abs( P1 - last_P1 ) > 0.05 ):
-								last_P1 = P1
-								cmd = "set M0 " + str(P1)
-								ser.write((cmd + '\n').encode())
+						last_P1 = P1
+						cmd = "set M0 " + str(P1)
+						if flag == "s":
+							Serial.WriteToSerial(cmd + '\n')
+						else:
+							ws.send(cmd)
 						#while ser.in_waiting > 0:
-								#response = ser.readline().decode('utf-8').rstrip()
-								#print(f"ESP32 Response: {response}")
+							#response = ser.readline().decode('utf-8').rstrip()
+							#print(f"ESP32 Response: {response}")
 
 					if( abs( P2 - last_P2 ) > 0.05 ):
-								last_P2 = P2
-								cmd = "set M1 " + str(P2)
-								ser.write((cmd + '\n').encode())
-						#while ser.in_waiting > 0:
-								#response = ser.readline().decode('utf-8').rstrip()
-								#print(f"ESP32 Response: {response}")
+						last_P2 = P2
+						cmd = "set M1 " + str(P2)
+						if flag == "s":
+							Serial.WriteToSerial(cmd + '\n')
+						else:
+							ws.send(cmd)
 
 					if( abs( P3 - last_P3 ) > 0.05 ):
-								last_P3 = P3
-								cmd = "set M3 " + str(P3)
-								ser.write((cmd + '\n').encode())
-						#while ser.in_waiting > 0:
-								#response = ser.readline().decode('utf-8').rstrip()
-								#print(f"ESP32 Response: {response}")
-
+						last_P3 = P3
+						cmd = "set M3 " + str(P3) # M3 is connected to the M2 slot
+						if flag == "s":
+							Serial.WriteToSerial(cmd + '\n')
+						else:
+							ws.send(cmd)
 			# Joystick disconnected...
 			print('Connection to joystick lost')
 		except IOError:
@@ -279,7 +373,6 @@ def KeyboardSupport():
 				P2 = -round(P2,3)
 				P3 = -round(P3,3)
 
-
 				print("=======")
 				print("P1:", P1)
 				print("P2:", P2)
@@ -314,7 +407,6 @@ def KeyboardSupport():
 							#response = ser.readline().decode('utf-8').rstrip()
 							#print(f"ESP32 Response: {response}")
 
-
 				print("left_joy_H", left_joy_H)
 				print("left_joy_V", left_joy_V)
 				print("right_joy_H", right_joy_H)
@@ -325,22 +417,5 @@ def KeyboardSupport():
 			time.sleep(0.1)
 			#print('Unable to get controller state')
 
-if len(sys.argv) > 1:
-	controller_type = sys.argv[1]
-	print("Setting controller to: %s" % controller_type)
 
-if controller_type == "PS4":
-	MAX_TRIG_VAL = 255
-	MAX_JOY_VAL = 255
-	ControllerSupport()
-
-if controller_type == "Other":
-	MAX_TRIG_VAL = math.pow(2, 8)
-	MAX_JOY_VAL = math.pow(2, 15)
-	ControllerSupport()
-
-if controller_type == "approxenglib":
-	ControllerSupportApproxEngLib()
-
-if controller_type == "Keyboard":
-	KeyboardSupport()
+DetermineInput()
