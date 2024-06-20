@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mujoco model="triangular_base">
+
+    <!-- set some defaults for units and lighting -->
+    <compiler angle="degree" meshdir="./stl_exports/"/>
+
+	<option timestep="0.001"/>
+
+    <!-- import our stl files -->
+    <asset>
+        <mesh name="baseplate" file="baseplate_robot.stl" />
+        <mesh name="wheel" file="wheel_for_mujoco.stl" />
+    </asset>
+
+    <!-- define our robot model -->
+    <worldbody>
+        <!-- set up a light pointing down on the robot -->
+        <light directional="true" pos="-0.5 0.5 3" dir="0 0 -1" />
+
+        <!-- add a floor so we don't stare off into the abyss -->
+        <geom name="floor" pos="0 0 2" size="50 50 50" type="plane" rgba="1 0.83 0.61 0.5"/>
+
+        <!-- start building our model -->
+        <body name="base" pos="0 0 0">
+	    <joint name="joint_base" type="free" axis="0 0 0"/>
+            <geom name="baseplate_robot" type="mesh" mesh="baseplate" pos="0 0 1"/>
+            <inertial pos="0 0 1" mass="150" diaginertia="1 1 1"/>
+
+		<body name="omni_wheel_intermediate_link" pos="0 0 0">
+		    <inertial pos="0 0 0" quat="0.707107 0 0 0.707107" mass="6.5" diaginertia="0.0524193 0.0303095 0.0303095" />
+		    <joint name="R1_omni_wheel_rolling_joint" pos="0 0 0" axis="0 1 0" />
+		    <geom size="0.048 0.096" quat="0.707107 0.707107 0 0" type="cylinder" rgba="0.2 0.2 0.2 0.5" contype="1" conaffinity="0"/>
+
+
+		    <body name="omni_roller_0_link" pos="0.016067489524842053 0.0 -0.005220643815637086">
+			<joint name="omni_slipping_0_joint" type="hinge" pos="0 0 0" axis="-0.0033925800054340066 0.096 -0.010441287631274172" damping="0.1" limited="false" actuatorfrclimited="false"/>
+			<inertial pos="0 0 0" quat="0.711549 0.711549 0 0 " mass="0.001" diaginertia="0.00001 0.00001 0.00001" />
+			<geom size="0.048" quat="1 0 0 0" type="sphere" rgba="0.2 0.2 0.2 1" contype="1" conaffinity="0"/>
+		    </body>
+
+		    <body name="omni_roller_1_link" pos="0.016067489524842053 0.0 0.005220643815637084">
+			<joint name="omni_slipping_1_joint" type="hinge" pos="0 0 0" axis="0.003392580005434005 0.096 -0.010441287631274169" damping="0.1" limited="false" actuatorfrclimited="false"/>
+			<inertial pos="0 0 0" quat="0.711549 0.711549 0 0 " mass="0.001" diaginertia="0.00001 0.00001 0.00001" />
+			<geom size="0.048" quat="1 0 0 0" type="sphere" rgba="0.2 0.2 0.2 1" contype="1" conaffinity="0"/>
+		    </body>
+
+		    <body name="omni_roller_2_link" pos="0.009930254640235288 0.0 0.013667822952494826">
+			<joint name="omni_slipping_2_joint" type="hinge" pos="0 0 0" axis="0.008881889763779528 0.096 -0.006453070642441314" damping="0.1" limited="false" actuatorfrclimited="false"/>
+			<inertial pos="0 0 0" quat="0.711549 0.711549 0 0 " mass="0.001" diaginertia="0.00001 0.00001 0.00001" />
+			<geom size="0.048" quat="1 0 0 0" type="sphere" rgba="0.2 0.2 0.2 1" contype="1" conaffinity="0"/>
+		    </body>
+
+		    <body name="omni_roller_3_link" pos="8.673617379884035e-19 0.0 0.016894358273715486">
+			<joint name="omni_slipping_3_joint" type="hinge" pos="0 0 0" axis="0.010978619516691044 0.096 -3.469446951953614e-18" damping="0.1" limited="false" actuatorfrclimited="false"/>
+			<inertial pos="0 0 0" quat="0.711549 0.711549 0 0 " mass="0.001" diaginertia="0.00001 0.00001 0.00001" />
+			<geom size="0.048" quat="1 0 0 0" type="sphere" rgba="0.2 0.2 0.2 1" contype="1" conaffinity="0"/>
+		    </body>
+
+		    <body name="omni_roller_4_link" pos="-0.009930254640235284 0.0 0.01366782295249483">
+			<joint name="omni_slipping_4_joint" type="hinge" pos="0 0 0" axis="0.008881889763779528 0.096 0.006453070642441315" damping="0.1" limited="false" actuatorfrclimited="false"/>
+			<inertial pos="0 0 0" quat="0.711549 0.711549 0 0 " mass="0.001" diaginertia="0.00001 0.00001 0.00001" />
+			<geom size="0.048" quat="1 0 0 0" type="sphere" rgba="0.2 0.2 0.2 1" contype="1" conaffinity="0"/>
+		    </body>
+
+		    <body name="omni_roller_5_link" pos="-0.016067489524842053 0.0 0.005220643815637087">
+			<joint name="omni_slipping_5_joint" type="hinge" pos="0 0 0" axis="0.0033925800054340066 0.096 0.010441287631274169" damping="0.1" limited="false" actuatorfrclimited="false"/>
+			<inertial pos="0 0 0" quat="0.711549 0.711549 0 0 " mass="0.001" diaginertia="0.00001 0.00001 0.00001" />
+			<geom size="0.048" quat="1 0 0 0" type="sphere" rgba="0.2 0.2 0.2 1" contype="1" conaffinity="0"/>
+		    </body>
+
+		    <body name="omni_roller_6_link" pos="-0.016067489524842056 0.0 -0.005220643815637083">
+			<joint name="omni_slipping_6_joint" type="hinge" pos="0 0 0" axis="-0.003392580005434003 0.096 0.010441287631274169" damping="0.1" limited="false" actuatorfrclimited="false"/>
+			<inertial pos="0 0 0" quat="0.711549 0.711549 0 0 " mass="0.001" diaginertia="0.00001 0.00001 0.00001" />
+			<geom size="0.048" quat="1 0 0 0" type="sphere" rgba="0.2 0.2 0.2 1" contype="1" conaffinity="0"/>
+		    </body>
+
+		    <body name="omni_roller_7_link" pos="-0.009930254640235288 0.0 -0.013667822952494826">
+			<joint name="omni_slipping_7_joint" type="hinge" pos="0 0 0" axis="-0.008881889763779526 0.096 0.006453070642441315" damping="0.1" limited="false" actuatorfrclimited="false"/>
+			<inertial pos="0 0 0" quat="0.711549 0.711549 0 0 " mass="0.001" diaginertia="0.00001 0.00001 0.00001" />
+			<geom size="0.048" quat="1 0 0 0" type="sphere" rgba="0.2 0.2 0.2 1" contype="1" conaffinity="0"/>
+		    </body>
+
+		    <body name="omni_roller_8_link" pos="-3.469446951953614e-18 0.0 -0.016894358273715486">
+			<joint name="omni_slipping_8_joint" type="hinge" pos="0 0 0" axis="-0.010978619516691046 0.096 3.469446951953614e-18" damping="0.1" limited="false" actuatorfrclimited="false"/>
+			<inertial pos="0 0 0" quat="0.711549 0.711549 0 0 " mass="0.001" diaginertia="0.00001 0.00001 0.00001" />
+			<geom size="0.048" quat="1 0 0 0" type="sphere" rgba="0.2 0.2 0.2 1" contype="1" conaffinity="0"/>
+		    </body>
+
+		    <body name="omni_roller_9_link" pos="0.009930254640235284 0.0 -0.01366782295249483">
+			<joint name="omni_slipping_9_joint" type="hinge" pos="0 0 0" axis="-0.00888188976377953 0.096 -0.006453070642441314" damping="0.1" limited="false" actuatorfrclimited="false"/>
+			<inertial pos="0 0 0" quat="0.711549 0.711549 0 0 " mass="0.001" diaginertia="0.00001 0.00001 0.00001" />
+			<geom size="0.048" quat="1 0 0 0" type="sphere" rgba="0.2 0.2 0.2 1" contype="1" conaffinity="0"/>
+		    </body>
+		</body>
+
+
+        </body>
+    </worldbody>
+
+</mujoco>
