@@ -7,14 +7,23 @@ import mujoco.viewer
 import math
 import glfw
 
+paused = False
+
+def key_callback(keycode):
+  if chr(keycode) == ' ':
+    nonlocal paused
+    paused = not paused
+
 m = mujoco.MjModel.from_xml_path('xml-triangle-car.xml')
 d = mujoco.MjData(m)
+# b = mujoco.MjBody(m)
 
-with mujoco.viewer.launch_passive(m, d) as viewer:
+with mujoco.viewer.launch_passive(m, d, key_callback=key_callback) as viewer:
 	# Close the viewer automatically after X wall-seconds.
 	start = time.time()
 	pos_matrix = []
 	vel_matrix = []
+	acc_matrix = []
 	time_matrix = []
 	limit = 75
 	# Set an initial velocity for a joint (e.g., assuming joint index 0)
@@ -25,10 +34,11 @@ with mujoco.viewer.launch_passive(m, d) as viewer:
 	#m.jnt_dofadr = initial_velocity
 	#m.jnt_dofadr = -initial_velocity
 	while viewer.is_running() and time.time() - start < 40:
-		print('pos:', sum(d.qpos))
-		pos_matrix.append(sum(d.qpos))
-		print('vel:', sum(d.qvel))
-		vel_matrix.append(sum(d.qvel))
+		print('pos (x):', np.mean(d.xpos))
+		pos_matrix.append(np.mean(d.xpos))
+		print('vel:', np.mean(d.qvel))
+		vel_matrix.append(np.mean(d.qvel))
+		acc_matrix.append(np.mean(d.qacc))
 		step_start = time.time()
 		print("Current time:", time.time() - start)
 		time_matrix.append(time.time() - start)

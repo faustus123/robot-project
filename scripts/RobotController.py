@@ -2,8 +2,6 @@
 # It sends a websockets command which the websockets server will interpret
 # and then send a serial input into the motor controller.
 
-
-
 import serial
 import inputs
 import time
@@ -100,9 +98,9 @@ class WebSocket():
 class Serial():
 	def __init__(self, path):
 		if len(sys.argv) > 1:
-			self.ser = serial.Serial("/dev/" + path, 115200, timeout=1)
+			self.ser = serial.Serial("/dev/" + path, 115200)
 		else:
-			self.ser = serial.Serial("/dev/TTYUSB0" + path, 115200, timeout=1)
+			self.ser = serial.Serial("/dev/TTYUSB0" + path, 115200)
 		print("Setting up serial, please wait...")
 		time.sleep(2)  # Wait for the serial connection to initialize
 
@@ -164,6 +162,9 @@ def ControllerSupportApproxEngLib(flag):
 					rx, ry = joystick['r']
 					ls = joystick['ls']
 					rs = joystick['rs']
+					a = joystick['cross']
+					x = joystick['square']
+
 
 					if presses['ls']:
 						if flag == "s":
@@ -176,9 +177,28 @@ def ControllerSupportApproxEngLib(flag):
 						else:
 							WebSocket.SetEnableAllWebSockets(1)
 
+					if presses['cross']:
+						if a is not None:
+							cmd = "set M2 5"
+							ws.send(cmd)
+
+					if presses['square']:
+						if x is not None:
+							cmd = "set M2 -0.25"
+							ws.send(cmd)
+
+					if presses['circle']:
+						cmd = "set M2 0"
+						ws.send(cmd)
+
 					P1 = (2.0/3.0)*lx+(1.0/3.0)*rx
 					P2 = (-1.0/3.0)*lx+(1.0/math.sqrt(3.0))*ly+(1.0/3.0)*rx
 					P3 = (-1.0/3.0)*lx-(1.0/math.sqrt(3.0))*ly+(1.0/3.0)*rx
+
+					P1 = -P1
+					P2 = -P2
+					P3 = -P3
+
 
 					print("=======")
 					print("P1:", P1)
